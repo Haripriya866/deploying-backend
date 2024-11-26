@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
 const uuid = require("uuid");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
@@ -58,25 +58,7 @@ app.post("/users", async (request, response) => {
     const sql =
       "INSERT INTO users (`name`,`address`,`email`,`phone`) VALUES (?,?,?,?)";
     await db.run(sql, [name, address, email, phone]);
-    // // Forward the request to GoRest API
-    // const url = "https://gorest.co.in/public-api/users";
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //     Authorization:
-    //       "Bearer 262a92254071a95568d328b153edf8570d3a6412a382dffee509c7f431839c7d", // Keep the token here in backend
-    //   },
-    //   body: JSON.stringify({ name, address, email, phone }),
-    // };
-    // // Send request to GoRest API
-    // const apiResponse = await fetch(url, options);
-    // const jsonData = await apiResponse.json();
-    // response
-    //   .status(200)
-    //   .json({ message: "User created successfully", jsonData });
-      response.status(200).json({ message: "User created successfully" });
+    response.status(200).json({ message: "User created successfully" });
   } else {
     return response.status(400).json({ error: "User already exists" });
   }
@@ -85,7 +67,7 @@ app.post("/users", async (request, response) => {
 //USER REGISTRATION
 app.post("/register", async (request, response) => {
   const { username, password } = request.body;
-  
+
   const selectUserQuery = `SELECT * FROM user_registration WHERE username = ?`;
   const dbUser = await db.get(selectUserQuery, [username]);
   if (dbUser === undefined) {
